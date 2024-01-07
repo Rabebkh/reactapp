@@ -6,8 +6,8 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', changelog: false, poll: false, url: 'https://github.com/Rabebkh/reactapp.git'
-                
+                echo "Récupération du code source"
+                checkout scm 
             }
         }
     }

@@ -1,38 +1,28 @@
 pipeline {
     agent any
-
+    triggers {
+    pollSCM('*/5 * * * *') // Vérifier toutes les 5 minutes
+    }
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
+              echo "Récupération du code source"
+              checkout scm
             }
-        }
+    }
+    stage('Build') {
+        steps {
+          echo "Build du projet"
 
-        stage('Build and Push Docker Image') {
-            steps {
-                script {
-                    // Utilisez votre ID de connexion DockerHub défini dans Jenkins
-                    def dockerhubCred = credentials('dh_cred')
+// Ajoutez les commandes de build ici
 
-                    // Construire et pousser l'image Docker
-                    docker.withRegistry('https://registry-1.docker.io', 'dockerhubCred') {
-                        def customImage = docker.build("rabebkhaled/mini_projet:${env.BUILD_NUMBER}")
-                        customImage.push()
-                    }
-                }
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                // Ajoutez des étapes de déploiement si nécessaire
-            }
         }
     }
-
-    post {
-        always {
-            // Nettoyer les ressources ou effectuer d'autres actions après la construction
+    stage('Deploy') {
+        steps {
+          echo "Déploiement du projet"
+// Ajoutez les commandes de déploiement ici
         }
     }
+  }
 }
